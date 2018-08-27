@@ -4,11 +4,8 @@ package homeworkLesson2;
 /**
  * Исключение расширяет действие NumberFormatException для класса MyArray, позволяя использовать
  * индексы ячеек двумерного массива, в которой выброшено исключение
- * 
- * @author s.khanov
- *
  */
-public class MyArrayDataException extends NumberFormatException {
+public class MyArrayDataException extends Exception {
 	
 	private int firsDemensionArrayCell;
 	private int secondDemendionArrayCell;

@@ -2,7 +2,7 @@ package homeworkLesson2;
 
 public class MyArray {
 	
-	private static final int MAX_ARRAY_LENGHT = 4;
+	private static final int MAX_ARRAY_LENGHT = 3;
 	
 	
 	/**

@@ -68,6 +68,7 @@ public class MainClass {
 				result = myArray.processArray(stringArr);
 			} catch (MyArraySizeException e) {
 				e.printStackTrace();
+				result = -1;				
 			} catch (MyArrayDataException e) {				
 				System.out.println(e.getMessage());
 				System.out.println("Введите в эту ячейку число от 0 до 9");				
