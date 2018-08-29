@@ -34,7 +34,7 @@ public class ArrayParser {
 					cont ++;
 				}
 			}
-			System.out.println("String \"" + uniqueString + "\"repeat " + cont + " times");
+			System.out.println("String \"" + uniqueString + "\"repeats " + cont + " times");
 		}
 	}
 	
