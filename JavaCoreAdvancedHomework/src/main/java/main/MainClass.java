@@ -1,6 +1,5 @@
 package main;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,15 +15,21 @@ import homeworkLesson2.MyArrayDataException;
 import homeworkLesson2.MyArraySizeException;
 import homeworkLesson3.ArrayParser;
 import homeworkLesson3.PhoneDirectory;
+import homeworkLesson4.ChatWindow;
 
 public class MainClass {
 
 	public static void main(String[] args) {
 //		doHomeworkLesson1();
 //		doHomeworkLesson2();
-		doHomeworkLesson3();
+//		doHomeworkLesson3();
+		doHomeworkLesson4();
 
 
+	}
+
+	private static void doHomeworkLesson4() {
+		new ChatWindow();
 	}
 
 	private static void doHomeworkLesson3() {
