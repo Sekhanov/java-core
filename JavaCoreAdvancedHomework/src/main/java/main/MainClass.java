@@ -16,6 +16,7 @@ import homeworkLesson2.MyArraySizeException;
 import homeworkLesson3.ArrayParser;
 import homeworkLesson3.PhoneDirectory;
 import homeworkLesson4.ChatWindow;
+import homeworkLesson5.ConcurrencyTest;
 
 public class MainClass {
 
@@ -23,14 +24,34 @@ public class MainClass {
 //		doHomeworkLesson1();
 //		doHomeworkLesson2();
 //		doHomeworkLesson3();
-		doHomeworkLesson4();
-
+//		doHomeworkLesson4();
+		doHomeworkLesson5();
 
 	}
+	
+	
+	private static void doHomeworkLesson5() {
+		int arrSise = 10000000;
+		ConcurrencyTest concurrencyTest = new ConcurrencyTest();
+		
+		float[] arr1 = new float[arrSise];
+		concurrencyTest.fillFloatArr(arr1);		
+		long oneThreadProcessTime = concurrencyTest.processTime(concurrencyTest::oneThreadProcessArray, arr1);
+		System.out.println("one thead time: " + oneThreadProcessTime + "ms");
+		System.out.println(arr1[9999999]);
+		
+		float[] arr2 = new float[arrSise];
+		concurrencyTest.fillFloatArr(arr2);		
+		long twoThreadProcessTime = concurrencyTest.processTime(concurrencyTest::twoThreadProcessArray, arr2);
+		System.out.println("two thead time: " + twoThreadProcessTime + "ms");
+		System.out.println(arr1[9999999]);
+	}
 
+	
 	private static void doHomeworkLesson4() {
 		new ChatWindow();
 	}
+	
 
 	private static void doHomeworkLesson3() {
 		String[] strings = new String[20];
