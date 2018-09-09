@@ -25,9 +25,11 @@ public class MainClass {
 //		doHomeworkLesson2();
 //		doHomeworkLesson3();
 //		doHomeworkLesson4();
-		doHomeworkLesson5();
+//		doHomeworkLesson5();
 
 	}
+	
+	
 	
 	
 	private static void doHomeworkLesson5() {
