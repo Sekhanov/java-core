@@ -11,20 +11,25 @@ public class ChatServer {
 	private ServerSocket serverSocket;	
 	private Vector<ClientHandler> clientHandlers;
 	private int clientConter;
+	private AuthentificationService authentificationService;
 	
 	
-	
+	public AuthentificationService getAuthentificationService() {
+		return authentificationService;
+	}
+
 	public ChatServer() {
 		Socket clientSocket = null;
 		try {
 			serverSocket = new ServerSocket(SERVER_PORT);
 			clientConter = 1;
 			clientHandlers = new Vector<>();
+			authentificationService = new AuthentificationService();
 			while(true) {
 				System.out.println("Server is waiting for connection...");
 				clientSocket = serverSocket.accept();
 				System.out.println("Client "+ clientConter + " connected");
-				clientHandlers.add(new ClientHandler(this, clientSocket));
+				new ClientHandler(this, clientSocket);
 				clientConter++;
 			}
 		} catch (IOException e) {
@@ -46,6 +51,23 @@ public class ChatServer {
 
 	public int getClientConter() {
 		return clientConter;
+	}
+	
+	public boolean isNickBusy(String nick) {
+		boolean result = false;
+		for (ClientHandler clientHandler : clientHandlers) {
+			result |= clientHandler.getName().equals(nick);
+		}
+		return result;
+		
+	}
+
+	public void addClient(ClientHandler clientHandler) {
+		clientHandlers.add(clientHandler);
+	}
+
+	public void removeClient(ClientHandler clientHandler) {
+		clientHandlers.remove(clientHandler);
 	}
 	
 	
