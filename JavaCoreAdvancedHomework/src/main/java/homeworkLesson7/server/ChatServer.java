@@ -3,6 +3,8 @@ package homeworkLesson7.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 public class ChatServer {
@@ -12,6 +14,7 @@ public class ChatServer {
 	private Vector<ClientHandler> clientHandlers;
 	private int clientConter;
 	private AuthentificationService authentificationService;
+	
 	
 	
 	public AuthentificationService getAuthentificationService() {
@@ -71,6 +74,14 @@ public class ChatServer {
 	}
 	
 	
+	public ClientHandler getClientHanderlByName(String name) {
+		ClientHandler result = null;
+		for (ClientHandler clientHandler : clientHandlers) {
+			if(clientHandler.getName().equals(name)) result = clientHandler;
+		}
+		return result;
+	}
 	
+
 	
 }

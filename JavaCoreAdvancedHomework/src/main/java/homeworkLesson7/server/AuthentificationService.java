@@ -7,6 +7,7 @@ public class AuthentificationService {
 	
 	private List<Account> accounts; 
 	
+
 	private class Account {
 		private String login;
 		private String password;
@@ -34,5 +35,7 @@ public class AuthentificationService {
 		}
 		return result;
 	}
+	
+
 	
 }

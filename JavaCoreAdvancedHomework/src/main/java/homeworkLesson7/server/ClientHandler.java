@@ -3,6 +3,7 @@ package homeworkLesson7.server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List;
 import java.util.Scanner;
 
 public class ClientHandler {
@@ -42,24 +43,35 @@ public class ClientHandler {
 		processMessage();
 	}
 
-	private void processMessage() {
+	private void processMessage() {		
 		while(true) {
 			String message = clientScanner.nextLine();
 			if(message.startsWith("/exit")) {
-				sendMessage(name + " покинул чат");
+				chatServer.broadcastMessage(name + " покинул чат");
 				chatServer.removeClient(this);
 				break;
 			} 
-			chatServer.broadcastMessage(name + ": " + message);
+			if(message.startsWith("/w") && message.split(" ").length > 2) {
+				String[] pargs = message.split(" ");
+				String nick = pargs[1];				
+				ClientHandler clientHandler;
+					if((clientHandler  = chatServer.getClientHanderlByName(nick)) != null) {
+						clientHandler.sendMessage(name + ":" + pargs[2]);
+					} else {
+						sendMessage("Пользователя " + nick + " в чате отсутствует");
+						
+					}
+			} else {
+				chatServer.broadcastMessage(name + ": " + message);
+			}
 		}
 	}
-
 
 
 	private void authentification() {
 		while (true) {
 			String message = clientScanner.nextLine();
-			if (message.startsWith("/auth")) {
+			if (message.startsWith("/auth" ) && message.split(" ").length > 2) {
 				String[] messageParts = message.split(" ");
 				String nick = chatServer.getAuthentificationService().getNickByLogPass(messageParts[1],
 						messageParts[2]);
