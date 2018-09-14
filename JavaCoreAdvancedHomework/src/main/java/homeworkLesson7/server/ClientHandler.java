@@ -3,7 +3,6 @@ package homeworkLesson7.server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.List;
 import java.util.Scanner;
 
 public class ClientHandler {
@@ -73,7 +72,7 @@ public class ClientHandler {
 			String message = clientScanner.nextLine();
 			if (message.startsWith("/auth" ) && message.split(" ").length > 2) {
 				String[] messageParts = message.split(" ");
-				String nick = chatServer.getAuthentificationService().getNickByLogPass(messageParts[1],
+				String nick = chatServer.getAuthentificationService().authNickByLogPass(messageParts[1],
 						messageParts[2]);
 				if (nick != null) {
 					if(!chatServer.isNickBusy(nick)) {

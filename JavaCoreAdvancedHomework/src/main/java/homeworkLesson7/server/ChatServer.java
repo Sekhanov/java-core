@@ -3,21 +3,22 @@ package homeworkLesson7.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
+import java.util.HashMap;
+import java.util.Map;
+
+
 
 public class ChatServer {
 
 	private static final int SERVER_PORT = 9999;
 	private ServerSocket serverSocket;	
-	private Vector<ClientHandler> clientHandlers;
+	private Map<String, ClientHandler> clientHandlers;
 	private int clientConter;
-	private AuthentificationService authentificationService;
+	private AuthService authentificationService;
 	
 	
 	
-	public AuthentificationService getAuthentificationService() {
+	public AuthService getAuthentificationService() {
 		return authentificationService;
 	}
 
@@ -26,7 +27,7 @@ public class ChatServer {
 		try {
 			serverSocket = new ServerSocket(SERVER_PORT);
 			clientConter = 1;
-			clientHandlers = new Vector<>();
+			clientHandlers = new HashMap<>();
 			authentificationService = new AuthentificationService();
 			while(true) {
 				System.out.println("Server is waiting for connection...");
@@ -43,9 +44,10 @@ public class ChatServer {
 	}
 	
 	public void broadcastMessage(String message) {
-		for (ClientHandler clientHandler : clientHandlers) {
-			clientHandler.sendMessage(message);
-		}
+//		for(Map.Entry<String, ClientHandler> entry : clientHandlers.entrySet()) {
+//			entry.getValue().sendMessage(message);			
+//		}
+		clientHandlers.forEach((k, v) -> v.sendMessage(message));
 	}
 	
 	public static void main(String... agrs) {
@@ -57,29 +59,21 @@ public class ChatServer {
 	}
 	
 	public boolean isNickBusy(String nick) {
-		boolean result = false;
-		for (ClientHandler clientHandler : clientHandlers) {
-			result |= clientHandler.getName().equals(nick);
-		}
-		return result;
+		return clientHandlers.containsKey(nick);
 		
 	}
 
 	public void addClient(ClientHandler clientHandler) {
-		clientHandlers.add(clientHandler);
+		clientHandlers.put(clientHandler.getName(), clientHandler);
 	}
 
 	public void removeClient(ClientHandler clientHandler) {
-		clientHandlers.remove(clientHandler);
+		clientHandlers.remove(clientHandler.getName());
 	}
 	
 	
 	public ClientHandler getClientHanderlByName(String name) {
-		ClientHandler result = null;
-		for (ClientHandler clientHandler : clientHandlers) {
-			if(clientHandler.getName().equals(name)) result = clientHandler;
-		}
-		return result;
+		return clientHandlers.get(name);
 	}
 	
 
