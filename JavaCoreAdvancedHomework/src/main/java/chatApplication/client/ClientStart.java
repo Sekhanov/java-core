@@ -1,4 +1,4 @@
-package homeworkLesson7.client;
+package chatApplication.client;
 
 public class ClientStart {
 

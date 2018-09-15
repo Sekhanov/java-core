@@ -29,7 +29,6 @@ public class Server {
 			new Thread(() -> translateServerMessage()).start();
 			translateClientMessage();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

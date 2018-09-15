@@ -1,4 +1,4 @@
-package homeworkLesson7.server;
+package utility;
 
 public class Message {
 
@@ -41,17 +41,23 @@ public class Message {
 		return true;
 	}
 	@Override
-	public String toString() {		
+	public String toString() {	
+		String result = null;		
 		switch(messageType) {
-		case AUTH_MESSAGE:
 		case BROADCAST_MESSAGE:
+		case PERSONAL_MESSAGE:
+			result = body;
+			break;
+		case AUTH_MESSAGE:
 		case EXIT_MESSAGE:
-		case PRIVATE_MESSAGE:
+		case ADD_USER_MESSAGE:
+			result = messageType.toString();
+			break;
 		default:
-			return "Message [body=" + body + ", messageType=" + messageType + "]";
+			System.out.println("Тип сообщения не удалось определить");
+			break;
 		}
-		
-		
+		return result;
 	}
 	
 	

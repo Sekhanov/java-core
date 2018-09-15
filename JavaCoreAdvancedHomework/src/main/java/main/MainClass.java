@@ -117,7 +117,6 @@ public class MainClass {
 
 		for (int i = 0; i < stringArr.length; i++) {
 			for (int j = 0; j < stringArr.length; j++) {
-				//TODO ЗДЕСЬ ЗАКОНЧИЛ
 				System.out.printf("Введите число для ячейки [%d][%d]", i, j);
 				System.out.println();
 				stringArr[i][j] = scanner.next();

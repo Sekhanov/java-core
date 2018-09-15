@@ -1,4 +1,4 @@
-package homeworkLesson7.server;
+package chatApplication.server;
 
 public class Account {
 	private String login;

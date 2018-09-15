@@ -1,4 +1,4 @@
-package homeworkLesson7.server;
+package chatApplication.server;
 
 import java.util.HashMap;
 import java.util.Map;
