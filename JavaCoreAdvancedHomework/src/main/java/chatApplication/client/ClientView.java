@@ -24,6 +24,7 @@ public class ClientView extends JFrame {
 		setBounds(500, 500, 500, 500);
 		
 		jTextArea = new JTextArea();
+		jTextArea.setWrapStyleWord(true);
 		jTextArea.setLineWrap(true);
 		jTextArea.setEditable(false);
 		JScrollPane jScrollPane = new JScrollPane(jTextArea);
@@ -48,16 +49,12 @@ public class ClientView extends JFrame {
 			jTextArea.append(message + "\n");
 		}
 	}
-	
-	
 
 	public void init(Controller clientController) {
 		this.clientController = clientController;
 		new Thread(() -> readMessage(), "clientMessageReader").start();
 	}
 	
-
-
 	private void sendMessage() {
 		String message = jTextField.getText();
 		clientController.sendMessage(message);

@@ -2,6 +2,13 @@ package chatApplication.server;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.NoSuchElementException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import utility.Channel;
 import utility.ChannelBase;
@@ -10,8 +17,10 @@ import utility.MessageType;
 
 public class ClientHandler {
 	private ChatServer chatServer;
-	private String name;
+	private String name = null;
 	private Channel channel;
+	private Thread readMessageThread;
+	private Socket clientSocket;
 
 	public Channel getChannel() {
 		return channel;
@@ -22,10 +31,12 @@ public class ClientHandler {
 	}
 
 	public ClientHandler(ChatServer chatServer, Socket clientSocket) {
+		this.clientSocket = clientSocket;
 		this.chatServer = chatServer;
 		try {
 			channel = ChannelBase.of(clientSocket);
-			new Thread(() -> reciveMessage(), "getMessageClient" + chatServer.getClientConter()).start();
+			readMessageThread = new Thread(this::reciveMessage, "getMessageClient" + chatServer.getClientConter());
+			readMessageThread.start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -35,68 +46,83 @@ public class ClientHandler {
 	private void sendSelfMessage(String msg) {
 		channel.sendMessage(new Message(msg, MessageType.PERSONAL_MESSAGE));
 	}
-	
+
 	private void sendPersonalMessage(String msg) {
 		String[] strings = msg.split(" ");
 		String toHandlerNick = strings[0];
 		ClientHandler toHandler = chatServer.getClientHanderlByName(toHandlerNick);
-		if(toHandler != null) {
+		if (toHandler != null) {
 			toHandler.channel.sendMessage(new Message(name + ":" + strings[1], MessageType.PERSONAL_MESSAGE));
 			sendSelfMessage(name + ":" + strings[1]);
 		} else {
-			 sendSelfMessage("Пользователя с ником " + toHandlerNick + "нет в сети");
+			sendSelfMessage("Пользователя с ником " + toHandlerNick + "нет в сети");
 		}
-		
+
 	}
-	
-	
 
 	public void reciveMessage() {
 		while (true) {
-			Message message = channel.getMessage();
-			if(message == null) {
-				sendSelfMessage("Неправильный формат сообщения");
-				continue;
-			}
-			switch (message.getMessageType()) {
-			case AUTH_MESSAGE:
-				authentification(message.getBody());
-				break;
-			case BROADCAST_MESSAGE:
-				chatServer.broadcastMessage(name + ":" + message.getBody());
-				break;
-			case EXIT_MESSAGE:
-				chatServer.broadcastMessage("Пользователь " + this.name + " покинул чат");
-				sendSelfMessage("Вы вышли из чата. Перезапустите клиент и авторизуйтесь заново");
-				chatServer.removeClient(this);
-				return;
-			case PERSONAL_MESSAGE:
-				sendPersonalMessage(message.getBody());
-				break;
-			case ADD_USER_MESSAGE:
-				addUser(message.getBody());
-				break;
-			case DEACTIVATE_USER_MESSAGE:
-				deactivateUser(message.getBody());
-			default:
-				break;
+			if (name == null) {
+				ExecutorService executorService = Executors.newFixedThreadPool(1);
+				Future<Message> future = executorService.submit(() -> channel.getMessage());
+				Message authMessage = null;
+					try {
+						authMessage = future.get(20, TimeUnit.SECONDS);
+						authentification(authMessage.getBody());
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						e.printStackTrace();
+					} catch (TimeoutException e) {
+						sendSelfMessage("Максимальное время авторизации в чате 120 секунд. Соединение разорвано. Перезагрузите клиент.");	
+						break;
+					}
+			} else {
+				Message message = channel.getMessage();
 
+				if (message == null) {
+					sendSelfMessage("Неправильный формат сообщения");
+					continue;
+				}
+				switch (message.getMessageType()) {
+//				case AUTH_MESSAGE:
+//					authentification(message.getBody());
+//					break;
+				case BROADCAST_MESSAGE:
+					chatServer.broadcastMessage(name + ":" + message.getBody());
+					break;
+				case EXIT_MESSAGE:
+					chatServer.broadcastMessage("Пользователь " + this.name + " покинул чат");
+					sendSelfMessage("Вы вышли из чата. Перезапустите клиент и авторизуйтесь заново");
+					chatServer.removeClient(this);
+					return;
+				case PERSONAL_MESSAGE:
+					sendPersonalMessage(message.getBody());
+					break;
+				case ADD_USER_MESSAGE:
+					addUser(message.getBody());
+					break;
+				case DEACTIVATE_USER_MESSAGE:
+					deactivateUser(message.getBody());
+				default:
+					break;
+				}
 			}
 		}
 	}
 
 	private void deactivateUser(String nick) {
-		
-		if(chatServer.getAuthentificationService().deactivateUser(nick)) {
+
+		if (chatServer.getAuthentificationService().deactivateUser(nick)) {
 			sendSelfMessage("Пользователь с ником " + nick + " деактивирован");
 		} else {
-			 sendSelfMessage("Пользователя с ником " + nick + " нет на сервере");
+			sendSelfMessage("Пользователя с ником " + nick + " нет на сервере");
 		}
 	}
 
 	private void addUser(String msg) {
-		if(msg.split(" ").length > 1) {
-			String[] strings = msg.split(" "); 
+		if (msg.split(" ").length > 1) {
+			String[] strings = msg.split(" ");
 			chatServer.getAuthentificationService().addOrActivateUser(strings[0], strings[1], strings[2]);
 			sendSelfMessage("Пользователь с данными " + msg + "успешно добавлен");
 		} else {

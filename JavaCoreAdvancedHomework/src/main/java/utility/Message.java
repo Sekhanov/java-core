@@ -9,6 +9,11 @@ public class Message {
 		this.body = body;
 		this.messageType = messageType;
 	}
+	
+	public static Message plainMessage(String msg) {
+		return new Message(msg, MessageType.PLAIN_MESSAGE);
+	}
+	
 	public String getBody() {
 		return body;
 	}
@@ -23,29 +28,12 @@ public class Message {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Message other = (Message) obj;
-		if (body == null) {
-			if (other.body != null)
-				return false;
-		} else if (!body.equals(other.body))
-			return false;
-		if (messageType != other.messageType)
-			return false;
-		return true;
-	}
-	@Override
 	public String toString() {	
 		String result = null;		
 		switch(messageType) {
 		case BROADCAST_MESSAGE:
 		case PERSONAL_MESSAGE:
+		case PLAIN_MESSAGE:
 			result = body;
 			break;
 		case AUTH_MESSAGE:
