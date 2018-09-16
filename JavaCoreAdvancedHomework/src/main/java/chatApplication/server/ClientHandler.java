@@ -67,8 +67,9 @@ public class ClientHandler {
 				Future<Message> future = executorService.submit(() -> channel.getMessage());
 				Message authMessage = null;
 					try {
-						authMessage = future.get(20, TimeUnit.SECONDS);
+						authMessage = future.get(120, TimeUnit.SECONDS);
 						authentification(authMessage.getBody());
+						executorService.shutdown();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					} catch (ExecutionException e) {
