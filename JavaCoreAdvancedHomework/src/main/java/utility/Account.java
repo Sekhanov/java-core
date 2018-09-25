@@ -1,4 +1,4 @@
-package chatApplication.server;
+package utility;
 
 public class Account {
 	private String login;

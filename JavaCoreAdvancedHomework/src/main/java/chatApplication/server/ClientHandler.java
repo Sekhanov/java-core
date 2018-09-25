@@ -114,7 +114,7 @@ public class ClientHandler {
 
 	private void deactivateUser(String nick) {
 
-		if (chatServer.getAuthentificationService().deactivateUser(nick)) {
+		if (chatServer.getAuthentificationService().activateDeactivateUser(nick)) {
 			sendSelfMessage("Пользователь с ником " + nick + " деактивирован");
 		} else {
 			sendSelfMessage("Пользователя с ником " + nick + " нет на сервере");
