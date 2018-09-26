@@ -24,10 +24,8 @@ public class ClientController implements Controller {
 				clientSocket = new Socket(SERVER_HOST, SERVER_PORT);
 				this.channel = ChannelBase.of(clientSocket);
 			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	}

@@ -40,6 +40,7 @@ public class ChannelBase implements Channel {
 		if(string.startsWith("/auth ")) result = new Message(string.substring(6).trim(), MessageType.AUTH_MESSAGE);
 		if(string.startsWith("/add ")) result = new Message(string.substring(5).trim(), MessageType.ADD_USER_MESSAGE);
 		if(string.startsWith("/del ")) result = new Message(string.substring(5).trim(), MessageType.DEACTIVATE_USER_MESSAGE);
+		if(string.startsWith("/change")) result = new Message(string.substring(7).trim(), MessageType.CHANGE_NICK_MESSAGE);
 		if(string.trim().isEmpty()) result = null;
 		return result;
 	}

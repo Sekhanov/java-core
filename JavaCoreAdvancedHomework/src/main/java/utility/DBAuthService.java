@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class DBAuthService implements AuthService {
 
@@ -65,7 +66,10 @@ public class DBAuthService implements AuthService {
 				preparedStatement.executeUpdate();
 				preparedStatement.close();
 			} else {
-				activateDeactivateUser(nick);
+				if(isRow("nickname", nick)) {
+					activateDeactivateUser(nick);					
+				}
+
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -82,17 +86,15 @@ public class DBAuthService implements AuthService {
 	 */
 	public boolean isRow(String col, String val) throws SQLException {
 		int rowCount = 0;
-		PreparedStatement checkDublicateStatment = connection
-				.prepareStatement("select count(*) from auth_data where ? = ?");
-		checkDublicateStatment.setString(1, col);
-		checkDublicateStatment.setString(2, val);
-		ResultSet resultSet = checkDublicateStatment.executeQuery();
+		String query = String.format("select count(*) from auth_data where %s = '%s'", col, val);
+		Statement statement = connection.createStatement();
+		ResultSet resultSet = statement.executeQuery(query);
 		while (resultSet.next()) {
 			rowCount = resultSet.getInt("count(*)");
 		}
 		resultSet.close();
-		checkDublicateStatment.close();
-		return rowCount > 0 ? false : true;
+		statement.close();
+		return rowCount > 0 ? true : false;
 
 	}
 
@@ -105,8 +107,10 @@ public class DBAuthService implements AuthService {
 				preparedStatement.setString(2, nick);
 				if(!isActive(nick)) {
 					preparedStatement.setInt(1, 1);
+					System.out.println("Пользователь " + nick + " активатован");
 				} else {
 					preparedStatement.setInt(1, 0);
+					System.out.println("Пользователь " + nick + " деактиватован");
 				}
 				preparedStatement.executeUpdate();
 				result = true;
@@ -155,7 +159,22 @@ public class DBAuthService implements AuthService {
 
 	@Override
 	public boolean changeNick(String currentNick, String newNick) {
-		return false;
+		boolean result = true;
+		try {
+			if(isRow("nickName", currentNick)) {
+				PreparedStatement preparedStatement = connection.prepareStatement("update auth_data set nickName = ? where nickname = ?");
+				preparedStatement.setString(1, newNick);
+				preparedStatement.setString(2, currentNick);
+				preparedStatement.executeUpdate();
+				preparedStatement.close();
+			} else {
+				System.out.println("Записи с ником " + currentNick + " не существует");
+				result = false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}	
 
 }

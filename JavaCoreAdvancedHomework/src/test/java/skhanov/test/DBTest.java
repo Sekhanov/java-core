@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import utility.DBAuthService;
@@ -16,8 +17,8 @@ public class DBTest {
 	public DBTest() {
 		this.dbAuthService = new DBAuthService();
 	}
-	
-	@Test
+
+	@Test @Ignore
 	public void testAuthDB() {		
 		String expected = "us1";
 		String actual = dbAuthService.authNickByLogPass("user1", "pass1");
@@ -25,33 +26,39 @@ public class DBTest {
 	}
 	
 	
-//	@Test
-//	public void testIsertUser() {
-//		boolean condition = dbAuthService.addOrActivateUser("user10", "pass10", "us10");
-//		assertTrue(condition);
-//	}
+	@Test 
+	public void testIsUser() {
+		boolean condition = dbAuthService.addOrActivateUser("user12", "pass10", "us10");
+		assertTrue(condition);
+	}
 	
-	@Test
+	@Test @Ignore
 	public void testIsRowInDB() {
 		boolean condition = false;
 		try {
-			condition = dbAuthService.isRow("login", "user1");
+			condition = dbAuthService.isRow("nickname", "us1");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		assertTrue(condition);
 	}
 	
-	@Test
+	@Test @Ignore
 	public void testIsActive() {
-		boolean condition = dbAuthService.isActive("us1");
+		boolean condition = dbAuthService.isActive("us2");
 		assertTrue(condition);
 	}
 	
-	@Test
+	@Test @Ignore
 	public void testActivateDeactivate() {
-		boolean condition = dbAuthService.activateDeactivateUser("us1");
+		boolean condition = dbAuthService.activateDeactivateUser("us2");
 		assertTrue(condition);
+	}
+	
+	@Test @Ignore
+	public void testChaneNickName() {
+		boolean condition = dbAuthService.changeNick("us1", "qwer");
+		assertTrue(condition);		
 	}
 
 }
