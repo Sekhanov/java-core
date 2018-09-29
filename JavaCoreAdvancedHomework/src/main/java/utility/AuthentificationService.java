@@ -1,4 +1,4 @@
-package chatApplication.server;
+package utility;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,24 +27,44 @@ public class AuthentificationService implements AuthService {
 	}
 
 	@Override
-	public Account addOrActivateUser(String login, String password, String nick) {
+	public boolean addOrActivateUser(String login, String password, String nick) {
+		boolean result = false;
 		Account account = accounts.get(nick);
 		if (account == null) {
 			accounts.put(nick, new Account(login, password, nick));
 			System.out.println("Добавлен новый пользователь");
+			result = true;
 		} else {
 			account.setAcrive(true);
 			System.out.println("Активирован сущетвующий пользователь");
+			result = false;
 		}
-		return account;
+		return result;
 	}
 
 	@Override
-	public boolean deactivateUser(String nick) {
+	public boolean activateDeactivateUser(String nick) {
 		boolean result = true;
 		Account account = accounts.get(nick);
 		if (account != null) {
-			account.setAcrive(false);
+			if(!account.isAcrive()) {
+				account.setAcrive(true);				
+			} else {
+				 account.setAcrive(false);
+			}
+			
+		} else {
+			result = false;
+		}
+		return result;
+	}
+
+	@Override
+	public boolean changeNick(String currentNick, String newNick) {
+		boolean result = true;
+		Account account = accounts.get(currentNick);
+		if(account != null) {
+			account.setNick(newNick);
 		} else {
 			result = false;
 		}

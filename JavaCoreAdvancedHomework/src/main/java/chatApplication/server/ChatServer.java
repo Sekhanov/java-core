@@ -6,6 +6,9 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
+import utility.AuthService;
+import utility.AuthentificationService;
+import utility.DBAuthService;
 import utility.Message;
 import utility.MessageType;
 
@@ -31,7 +34,8 @@ public class ChatServer {
 			serverSocket = new ServerSocket(SERVER_PORT);
 			clientConter = 1;
 			clientHandlers = new HashMap<>();
-			authentificationService = new AuthentificationService();
+//			authentificationService = new AuthentificationService();
+			authentificationService = new DBAuthService();
 			while (true) {
 				System.out.println("Server is waiting for connection...");
 				clientSocket = serverSocket.accept();

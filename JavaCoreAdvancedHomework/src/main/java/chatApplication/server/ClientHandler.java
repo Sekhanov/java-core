@@ -105,6 +105,10 @@ public class ClientHandler {
 					break;
 				case DEACTIVATE_USER_MESSAGE:
 					deactivateUser(message.getBody());
+				case CHANGE_NICK_MESSAGE:
+					chatServer.getAuthentificationService().changeNick(name, message.getBody());
+					chatServer.broadcastMessage("Пользователь сменил ник с " + name + " на " + message.getBody());
+					name = message.getBody();
 				default:
 					break;
 				}
@@ -114,7 +118,7 @@ public class ClientHandler {
 
 	private void deactivateUser(String nick) {
 
-		if (chatServer.getAuthentificationService().deactivateUser(nick)) {
+		if (chatServer.getAuthentificationService().activateDeactivateUser(nick)) {
 			sendSelfMessage("Пользователь с ником " + nick + " деактивирован");
 		} else {
 			sendSelfMessage("Пользователя с ником " + nick + " нет на сервере");
