@@ -15,8 +15,6 @@ public class ClientController implements Controller {
 	
 	private static final String SERVER_HOST = "localhost";
 	private static final int SERVER_PORT = 9999;
-//	private Scanner clientScanner;
-//	private PrintWriter clientPrintWriter;
 	private Socket clientSocket;
 	private Channel channel;
 	public ClientController() {
@@ -38,8 +36,6 @@ public class ClientController implements Controller {
 
 	@Override
 	public String reciveMessage() {
-		String result;
-		result = channel.getMessage().getBody();
-		return result;
+		return channel.getMessage().getBody();
 	}
 }

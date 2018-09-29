@@ -2,7 +2,7 @@ package utility;
 
 public class Message {
 
-	private String body;
+	private String body = " ";
 	private MessageType messageType;
 	
 	public Message(String body, MessageType messageType) {
