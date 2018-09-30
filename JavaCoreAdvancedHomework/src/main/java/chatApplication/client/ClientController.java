@@ -1,15 +1,12 @@
 package chatApplication.client;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Scanner;
 
 import utility.Channel;
 import utility.ChannelBase;
 import utility.Message;
-import utility.MessageType;
 
 public class ClientController implements Controller {
 	
@@ -35,7 +32,7 @@ public class ClientController implements Controller {
 
 
 	@Override
-	public String reciveMessage() {
+	public String reciveMessage() {		
 		return channel.getMessage().getBody();
 	}
 }

@@ -17,7 +17,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 
 public class ChatWindow extends JFrame {
-	
+
+	private static final long serialVersionUID = 3895525282035317205L;
+
 	public ChatWindow() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("MyChat");

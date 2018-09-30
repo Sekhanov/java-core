@@ -2,6 +2,7 @@ package utility;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,11 +13,10 @@ import java.util.List;
 public class FileMessageLogger implements MessageLogger {
 	
 	private BufferedWriter bufferWriter;
-	private BufferedReader bufferedReader;
+	
 	
 	public FileMessageLogger() throws IOException  {
 		this.bufferWriter = new BufferedWriter(new FileWriter("messageArchive.txt", true));
-		this.bufferedReader = new BufferedReader(new FileReader("messageArchive.txt"));
 	}
 
 	@Override
@@ -35,6 +35,12 @@ public class FileMessageLogger implements MessageLogger {
 
 	@Override
 	public List<String> restoreMessages(int amount) {
+		BufferedReader bufferedReader = null;
+		try {
+			bufferedReader = new BufferedReader(new FileReader("messageArchive.txt"));
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
 		List<String> stringFromFile = new ArrayList<>();
 		List<String> result = null;
 		String string = null;

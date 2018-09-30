@@ -5,6 +5,7 @@ package homeworkLesson2;
  */
 public class MyArraySizeException extends Exception {
 	
+	private static final long serialVersionUID = 899727428497236153L;
 
 	public MyArraySizeException(String string) {
 		super(string);

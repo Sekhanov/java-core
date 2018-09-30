@@ -67,7 +67,7 @@ public class ClientHandler {
 						authMessage = future.get(120, TimeUnit.SECONDS);
 						authentification(authMessage.getBody());
 						if(name != null) {
-							String string = chatServer.restoreMessageHistory(50);
+							String string = chatServer.restoreMessageHistory(5);
 							sendSelfMessage(string);
 						}
 						executorService.shutdown();
@@ -81,9 +81,7 @@ public class ClientHandler {
 					}
 			} else {				
 				Message message = channel.getMessage();
-
-				if (message == null) {
-					sendSelfMessage("Неправильный формат сообщения");
+				if (message.getBody().trim().isEmpty()) {
 					continue;
 				}
 				switch (message.getMessageType()) {

@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import utility.AuthService;
-import utility.AuthentificationService;
 import utility.DBAuthService;
 import utility.FileMessageLogger;
 import utility.Message;
@@ -85,7 +84,7 @@ public class ChatServer {
 	public String restoreMessageHistory(int count) {
 		String result = "";
 		for(String s: messageLogger.restoreMessages(count)) {
-			result += s;
+			result += s + "\n";
 		}
 		return result;
 	}
