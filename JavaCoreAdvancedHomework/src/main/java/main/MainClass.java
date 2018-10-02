@@ -3,6 +3,10 @@ package main;
 import java.util.List;
 import java.util.Scanner;
 
+import coreProfHwLesson1.Apple;
+import coreProfHwLesson1.Box;
+import coreProfHwLesson1.GenericsTest;
+import coreProfHwLesson1.Orange;
 import homewokrLesson1.Cource;
 import homewokrLesson1.Obstacle;
 import homewokrLesson1.Person;
@@ -26,6 +30,8 @@ public class MainClass {
 		doHomeworkLesson3();
 		doHomeworkLesson4();
 		doHomeworkLesson5();
+		
+		doHomeworkCoreProfLesson1();
 
 	}
 	
@@ -157,6 +163,55 @@ public class MainClass {
 		team2.passCource(cource);
 		team.showResults();
 		team2.showResults();
+	}
+	
+	private static void doHomeworkCoreProfLesson1() {
+		System.out.println("task 1");
+		Integer[] intArr = { 4, 5, 6, 2, 1, 9, 10 };
+		GenericsTest.arrayElementSwitch(intArr, 0, 6);
+		for (Integer integer : intArr) {
+			System.out.print(integer + ", ");
+		}
+		System.out.println();
+		String[] stringArr = { "буря", "мглою", "небо", "кроет" };
+		GenericsTest.arrayElementSwitch(stringArr, 1, 3);
+		for (String string : stringArr) {
+			System.out.print(string + " ");
+		}
+		System.out.println();
+		System.out.println("task 2");
+		List<Integer> intList = GenericsTest.arrayToArrList(intArr);
+		for (Integer integer : intList) {
+			System.out.print(integer + ", ");
+		}
+		System.out.println();
+		List<String> stringList = GenericsTest.arrayToArrList(stringArr);
+		for (String string : stringList) {
+			System.out.print(string + " ");
+		}
+		System.out.println();
+		System.out.println("task 3");
+		Box<Apple> appleBox = new Box<>();
+		appleBox.addFruit(new Apple(100));
+		appleBox.addFruit(new Apple(200));
+		appleBox.addFruit(new Apple(300));
+		appleBox.addFruit(new Apple(200));
+		Box<Orange> orangeBox = new Box<>();
+		orangeBox.addFruit(new Orange(200));
+		orangeBox.addFruit(new Orange(300));
+		orangeBox.addFruit(new Orange(100));
+		orangeBox.addFruit(new Orange(200));
+		if(appleBox.compare(orangeBox)) {
+			System.out.println("Коробки равны по весу");
+		} else {
+			System.out.println("Коробки отличаются по весу");
+		}
+		Box<Orange> orangeBox2 = new Box<>();
+		orangeBox.moveFruits(orangeBox2);
+		System.out.println(orangeBox.toString());
+		System.out.println(orangeBox2.toString());
+		
+		
 	}
 
 
