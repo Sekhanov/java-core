@@ -7,6 +7,10 @@ import coreProfHwLesson1.Apple;
 import coreProfHwLesson1.Box;
 import coreProfHwLesson1.GenericsTest;
 import coreProfHwLesson1.Orange;
+import coreProfHwLesson4.Monitor;
+import coreProfHwLesson4.ShowA;
+import coreProfHwLesson4.ShowB;
+import coreProfHwLesson4.ShowC;
 import homewokrLesson1.Cource;
 import homewokrLesson1.Obstacle;
 import homewokrLesson1.Person;
@@ -25,19 +29,31 @@ import homeworkLesson5.ConcurrencyTest;
 public class MainClass {
 
 	public static void main(String[] args) {
-		doHomeworkLesson1();
-		doHomeworkLesson2();
-		doHomeworkLesson3();
-		doHomeworkLesson4();
-		doHomeworkLesson5();
+//		doHomeworkLesson1();
+//		doHomeworkLesson2();
+//		doHomeworkLesson3();
+//		doHomeworkLesson4();
+//		doHomeworkLesson5();
 		
-		doHomeworkCoreProfLesson1();
-
+//		doHomeworkCoreProfLesson1();
+		doHomeworkCoreProfLesson4();
+		
 	}
 	
 	
 	
 	
+	private static void doHomeworkCoreProfLesson4() {
+		Monitor monitor = new Monitor();
+		new ShowA(monitor);
+		new ShowB(monitor);
+		new ShowC(monitor);
+		
+	}
+
+
+
+
 	private static void doHomeworkLesson5() {
 		int arrSise = 10000000;
 		ConcurrencyTest concurrencyTest = new ConcurrencyTest();
@@ -100,11 +116,6 @@ public class MainClass {
 		System.out.println("Списки телефонов с запросом по фамилиям:");
 		System.out.println("Иванов: " + phoneDirectory.getPhoneNumbers("Ivanov"));
 		System.out.println("Ханов: " + phoneDirectory.getPhoneNumbers("Khanov"));
-		
-		
-		
-		
-		
 	}
 	
 	private static void doHomeworkLesson2() {
@@ -210,8 +221,6 @@ public class MainClass {
 		orangeBox.moveFruits(orangeBox2);
 		System.out.println(orangeBox.toString());
 		System.out.println(orangeBox2.toString());
-		
-		
 	}
 
 
