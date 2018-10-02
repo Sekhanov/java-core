@@ -21,11 +21,11 @@ import homeworkLesson5.ConcurrencyTest;
 public class MainClass {
 
 	public static void main(String[] args) {
-//		doHomeworkLesson1();
-//		doHomeworkLesson2();
-//		doHomeworkLesson3();
-//		doHomeworkLesson4();
-//		doHomeworkLesson5();
+		doHomeworkLesson1();
+		doHomeworkLesson2();
+		doHomeworkLesson3();
+		doHomeworkLesson4();
+		doHomeworkLesson5();
 
 	}
 	

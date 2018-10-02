@@ -3,7 +3,6 @@ package utility;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class ChannelBase implements Channel {
@@ -35,13 +34,13 @@ public class ChannelBase implements Channel {
 		Message result = null;
 		String string = scanner.nextLine();
 		if(!string.startsWith("/")) result = new Message(string, MessageType.BROADCAST_MESSAGE);
-		if(string.startsWith("/exit")) result = new Message("", MessageType.EXIT_MESSAGE);
+		if(string.startsWith("/exit")) result = new Message("exit", MessageType.EXIT_MESSAGE);
 		if(string.startsWith("/w ")) result = new Message(string.substring(3).trim(), MessageType.PERSONAL_MESSAGE);
 		if(string.startsWith("/auth ")) result = new Message(string.substring(6).trim(), MessageType.AUTH_MESSAGE);
 		if(string.startsWith("/add ")) result = new Message(string.substring(5).trim(), MessageType.ADD_USER_MESSAGE);
 		if(string.startsWith("/del ")) result = new Message(string.substring(5).trim(), MessageType.DEACTIVATE_USER_MESSAGE);
 		if(string.startsWith("/change")) result = new Message(string.substring(7).trim(), MessageType.CHANGE_NICK_MESSAGE);
-		if(string.trim().isEmpty()) result = null;
+//		if(string.trim().isEmpty()) result = null;
 		return result;
 	}
 

@@ -7,6 +7,8 @@ package homeworkLesson2;
  */
 public class MyArrayDataException extends Exception {
 	
+	private static final long serialVersionUID = 1169980900134412217L;
+	
 	private int firsDemensionArrayCell;
 	private int secondDemendionArrayCell;
 

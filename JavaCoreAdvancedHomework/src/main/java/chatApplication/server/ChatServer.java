@@ -7,9 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import utility.AuthService;
-import utility.AuthentificationService;
 import utility.DBAuthService;
+import utility.FileMessageLogger;
 import utility.Message;
+import utility.MessageLogger;
 import utility.MessageType;
 
 public class ChatServer {
@@ -19,6 +20,7 @@ public class ChatServer {
 	private Map<String, ClientHandler> clientHandlers;
 	private int clientConter;
 	private AuthService authentificationService;
+	private MessageLogger messageLogger;
 
 	public static void main(String... agrs) {
 		new ChatServer();
@@ -36,6 +38,7 @@ public class ChatServer {
 			clientHandlers = new HashMap<>();
 //			authentificationService = new AuthentificationService();
 			authentificationService = new DBAuthService();
+			messageLogger = new FileMessageLogger();
 			while (true) {
 				System.out.println("Server is waiting for connection...");
 				clientSocket = serverSocket.accept();
@@ -72,6 +75,18 @@ public class ChatServer {
 
 	public ClientHandler getClientHanderlByName(String name) {
 		return clientHandlers.get(name);
+	}
+	
+	public void logMessage(String msg) {
+		messageLogger.archiveMessage(msg);
+	}
+	
+	public String restoreMessageHistory(int count) {
+		String result = "";
+		for(String s: messageLogger.restoreMessages(count)) {
+			result += s + "\n";
+		}
+		return result;
 	}
 
 }

@@ -2,7 +2,6 @@ package chatApplication.server;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -20,7 +19,6 @@ public class ClientHandler {
 	private String name = null;
 	private Channel channel;
 	private Thread readMessageThread;
-	private Socket clientSocket;
 
 	public Channel getChannel() {
 		return channel;
@@ -31,7 +29,6 @@ public class ClientHandler {
 	}
 
 	public ClientHandler(ChatServer chatServer, Socket clientSocket) {
-		this.clientSocket = clientSocket;
 		this.chatServer = chatServer;
 		try {
 			channel = ChannelBase.of(clientSocket);
@@ -69,6 +66,10 @@ public class ClientHandler {
 					try {
 						authMessage = future.get(120, TimeUnit.SECONDS);
 						authentification(authMessage.getBody());
+						if(name != null) {
+							String string = chatServer.restoreMessageHistory(5);
+							sendSelfMessage(string);
+						}
 						executorService.shutdown();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
@@ -78,19 +79,16 @@ public class ClientHandler {
 						sendSelfMessage("Максимальное время авторизации в чате 120 секунд. Соединение разорвано. Перезагрузите клиент.");	
 						break;
 					}
-			} else {
+			} else {				
 				Message message = channel.getMessage();
-
-				if (message == null) {
-					sendSelfMessage("Неправильный формат сообщения");
+				if (message.getBody().trim().isEmpty()) {
 					continue;
 				}
 				switch (message.getMessageType()) {
-//				case AUTH_MESSAGE:
-//					authentification(message.getBody());
-//					break;
 				case BROADCAST_MESSAGE:
-					chatServer.broadcastMessage(name + ":" + message.getBody());
+					String msg = name + ":" + message.getBody();
+					chatServer.broadcastMessage(msg);
+					chatServer.logMessage(msg);
 					break;
 				case EXIT_MESSAGE:
 					chatServer.broadcastMessage("Пользователь " + this.name + " покинул чат");
