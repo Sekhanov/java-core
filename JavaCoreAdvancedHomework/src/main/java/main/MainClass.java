@@ -7,6 +7,7 @@ import coreProfHwLesson1.Apple;
 import coreProfHwLesson1.Box;
 import coreProfHwLesson1.GenericsTest;
 import coreProfHwLesson1.Orange;
+import coreProfHwLesson4.Controller;
 import coreProfHwLesson4.Monitor;
 import coreProfHwLesson4.ShowA;
 import coreProfHwLesson4.ShowB;
@@ -36,13 +37,22 @@ public class MainClass {
 //		doHomeworkLesson5();
 		
 //		doHomeworkCoreProfLesson1();
-		doHomeworkCoreProfLesson4();
+//		doHomeworkCoreProfLesson4();
+		doFixHomeworkCoreProfLesson4();
 		
 	}
 	
 	
 	
 	
+	private static void doFixHomeworkCoreProfLesson4() {
+		Controller controller = new Controller(20, "a", "b", "c");
+		controller.start();
+	}
+
+
+
+
 	private static void doHomeworkCoreProfLesson4() {
 		Monitor monitor = new Monitor();
 		new ShowA(monitor);

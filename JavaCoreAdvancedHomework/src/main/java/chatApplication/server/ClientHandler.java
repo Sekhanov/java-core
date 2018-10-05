@@ -32,7 +32,7 @@ public class ClientHandler {
 		this.chatServer = chatServer;
 		try {
 			channel = ChannelBase.of(clientSocket);
-			chatServer.getExecutorService().execute(this::reciveMessage);
+			chatServer.execute(this::reciveMessage);
 //			readMessageThread = new Thread(this::reciveMessage, "getMessageClient" + chatServer.getClientConter());
 //			readMessageThread.start();
 		} catch (IOException e) {

@@ -96,5 +96,9 @@ public class ChatServer {
 		}
 		return result;
 	}
+	
+	public void execute(Runnable runnable) {
+		executorService.execute(runnable);
+	}
 
 }
