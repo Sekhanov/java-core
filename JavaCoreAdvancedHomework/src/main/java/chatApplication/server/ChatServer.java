@@ -5,6 +5,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import utility.AuthService;
 import utility.DBAuthService;
@@ -21,9 +23,14 @@ public class ChatServer {
 	private int clientConter;
 	private AuthService authentificationService;
 	private MessageLogger messageLogger;
+	private ExecutorService executorService;
 
 	public static void main(String... agrs) {
 		new ChatServer();
+	}
+
+	public ExecutorService getExecutorService() {
+		return executorService;
 	}
 
 	public AuthService getAuthentificationService() {
@@ -39,6 +46,7 @@ public class ChatServer {
 //			authentificationService = new AuthentificationService();
 			authentificationService = new DBAuthService();
 			messageLogger = new FileMessageLogger();
+			executorService = Executors.newCachedThreadPool();
 			while (true) {
 				System.out.println("Server is waiting for connection...");
 				clientSocket = serverSocket.accept();
