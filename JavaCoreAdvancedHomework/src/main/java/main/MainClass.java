@@ -54,28 +54,11 @@ public class MainClass {
 	
 	private static void race() {
 		final int CARS_COUNT = 10;		
-		Race race = new Race(CARS_COUNT, new Road(60), new Tunnel(80, CARS_COUNT / 2), new Road(40));
-		Car[] cars = new Car[CARS_COUNT];
-		
-		for (int i = 0; i < cars.length; i++) {
-			cars[i] = new Car(race, 20 + (int) (Math.random() * 20));
+		Race race = new Race(new Road(60), new Tunnel(80, CARS_COUNT / 2), new Road(40));
+		for (int i = 0; i < CARS_COUNT; i++) {			
+			race.addCar(new Car(race, 20 + (int) (Math.random() * 20)));
 		}
-		
-		System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Подготовка!!!");
-		
-		for (int i = 0; i < cars.length; i++) {
-			new Thread(cars[i]).start();
-		}
-		
-		try {
-			race.getStartRaceCountDownLatch().await();
-			System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка началась!!!");
-			race.getFinishRaceCountDownLatch().await();
-			System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка закончилась!!!");
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
+		race.startRace();
 	}
 
 
