@@ -7,28 +7,23 @@ import lombok.Getter;
 public class Car implements Runnable {
 
 	
-	private static int CAR_COUNTER;	
-	private static boolean IS_WINNER;
+	private volatile static int CAR_COUNTER;	
+	private volatile static boolean IS_WINNER;
 	@Getter
 	private int speed;
 	@Getter
 	private String name;
 	private Race race;
-	private CountDownLatch startRaceCountDownLatch;
-	private CountDownLatch finishRaceCountDownLatch;
-
 	
 	static {
 		CAR_COUNTER = 0;
 		IS_WINNER = false;
 	}
 	
-	public Car(Race race, int speed, CountDownLatch startRaceCountDownLatch, CountDownLatch finishRaceCountDownLatch) {
+	public Car(Race race, int speed) {
 		this.race = race;
 		this.name = "car " + CAR_COUNTER;
 		this.speed = speed;
-		this.finishRaceCountDownLatch = finishRaceCountDownLatch;
-		this.startRaceCountDownLatch = startRaceCountDownLatch;
 		CAR_COUNTER++;
 	}
 
@@ -40,8 +35,8 @@ public class Car implements Runnable {
 		try {
 			Thread.sleep(300 + (int) (Math.random() * 1000));
 			System.out.println("Участник " + name + " готов");
-			startRaceCountDownLatch.countDown();
-			startRaceCountDownLatch.await();
+			race.getStartRaceCountDownLatch().countDown();
+			race.getStartRaceCountDownLatch().await();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -52,7 +47,7 @@ public class Car implements Runnable {
 			System.out.println(name + " win!");
 			IS_WINNER = true;
 		}
-		finishRaceCountDownLatch.countDown();
+		race.getFinishRaceCountDownLatch().countDown();
 	}
 
 }

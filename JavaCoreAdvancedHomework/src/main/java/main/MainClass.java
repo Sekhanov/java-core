@@ -53,15 +53,12 @@ public class MainClass {
 	
 	
 	private static void race() {
-		final int CARS_COUNT = 10;
-		final CountDownLatch startRaceCountDownLatch = new CountDownLatch(CARS_COUNT);
-		final CountDownLatch finishRaceCountDownLatch = new CountDownLatch(CARS_COUNT);
-		final CyclicBarrier readyCarsCyclicBarrier = new CyclicBarrier(CARS_COUNT);
-		
-		Race race = new Race(new Road(60), new Tunnel(80, CARS_COUNT / 2), new Road(40));
+		final int CARS_COUNT = 10;		
+		Race race = new Race(CARS_COUNT, new Road(60), new Tunnel(80, CARS_COUNT / 2), new Road(40));
 		Car[] cars = new Car[CARS_COUNT];
+		
 		for (int i = 0; i < cars.length; i++) {
-			cars[i] = new Car(race, 20 + (int) (Math.random() * 20), startRaceCountDownLatch, finishRaceCountDownLatch);
+			cars[i] = new Car(race, 20 + (int) (Math.random() * 20));
 		}
 		
 		System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Подготовка!!!");
@@ -71,9 +68,9 @@ public class MainClass {
 		}
 		
 		try {
-			startRaceCountDownLatch.await();
+			race.getStartRaceCountDownLatch().await();
 			System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка началась!!!");
-			finishRaceCountDownLatch.await();
+			race.getFinishRaceCountDownLatch().await();
 			System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка закончилась!!!");
 		} catch (InterruptedException e) {
 			e.printStackTrace();
