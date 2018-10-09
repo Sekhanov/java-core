@@ -2,6 +2,8 @@ package main;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
 
 import coreProfHwLesson1.Apple;
 import coreProfHwLesson1.Box;
@@ -26,6 +28,10 @@ import homeworkLesson3.ArrayParser;
 import homeworkLesson3.PhoneDirectory;
 import homeworkLesson4.ChatWindow;
 import homeworkLesson5.ConcurrencyTest;
+import race.Car;
+import race.Race;
+import race.Road;
+import race.Tunnel;
 
 public class MainClass {
 
@@ -38,13 +44,43 @@ public class MainClass {
 		
 //		doHomeworkCoreProfLesson1();
 //		doHomeworkCoreProfLesson4();
-		doFixHomeworkCoreProfLesson4();
+//		doFixHomeworkCoreProfLesson4();
+		race();
 		
 	}
 	
 	
 	
 	
+	private static void race() {
+		final int CARS_COUNT = 10;		
+		Race race = new Race(CARS_COUNT, new Road(60), new Tunnel(80, CARS_COUNT / 2), new Road(40));
+		Car[] cars = new Car[CARS_COUNT];
+		
+		for (int i = 0; i < cars.length; i++) {
+			cars[i] = new Car(race, 20 + (int) (Math.random() * 20));
+		}
+		
+		System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Подготовка!!!");
+		
+		for (int i = 0; i < cars.length; i++) {
+			new Thread(cars[i]).start();
+		}
+		
+		try {
+			race.getStartRaceCountDownLatch().await();
+			System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка началась!!!");
+			race.getFinishRaceCountDownLatch().await();
+			System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка закончилась!!!");
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+
+
+
 	private static void doFixHomeworkCoreProfLesson4() {
 		Controller controller = new Controller(20, "a", "b", "c");
 		controller.start();
