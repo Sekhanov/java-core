@@ -1,6 +1,6 @@
 package utility;
 
-public enum MessageType {
+public enum MessageType {	
 	AUTH_MESSAGE,
 	PERSONAL_MESSAGE,
 	EXIT_MESSAGE,
