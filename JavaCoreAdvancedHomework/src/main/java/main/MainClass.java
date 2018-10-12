@@ -14,6 +14,7 @@ import coreProfHwLesson4.Monitor;
 import coreProfHwLesson4.ShowA;
 import coreProfHwLesson4.ShowB;
 import coreProfHwLesson4.ShowC;
+import coreProfHwLesson6.ArrayUtils;
 import homewokrLesson1.Cource;
 import homewokrLesson1.Obstacle;
 import homewokrLesson1.Person;
@@ -45,11 +46,22 @@ public class MainClass {
 //		doHomeworkCoreProfLesson1();
 //		doHomeworkCoreProfLesson4();
 //		doFixHomeworkCoreProfLesson4();
-		race();
+//		race();
+		coreProfHwLesson6();
 		
 	}
 	
-	
+	private static void coreProfHwLesson6() {
+		ArrayUtils arrayUtils = new ArrayUtils();
+		int[] arr1 = {4,1,4,1,4};
+//		int[] arr2 =  arrayUtils.newArrayFormFour(arr1);
+//		for (int i = 0; i < arr2.length; i++) {
+//			System.out.println(arr2[i]);
+//			
+//		}
+		System.out.println(arrayUtils.checkEqualNumbers(arr1));
+		
+	}
 	
 	
 	private static void race() {

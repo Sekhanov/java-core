@@ -9,17 +9,18 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import lombok.extern.slf4j.Slf4j;
 import utility.Channel;
 import utility.ChannelBase;
 import utility.Message;
 import utility.MessageType;
 
+@Slf4j
 public class ClientHandler {
 	private ChatServer chatServer;
 	private String name = null;
 	private Channel channel;
-	private Thread readMessageThread;
-
+	private int clientNumber;
 	public Channel getChannel() {
 		return channel;
 	}
@@ -28,13 +29,12 @@ public class ClientHandler {
 		return name;
 	}
 
-	public ClientHandler(ChatServer chatServer, Socket clientSocket) {
+	public ClientHandler(ChatServer chatServer, Socket clientSocket, int clientNumber) {
 		this.chatServer = chatServer;
+		this.clientNumber = clientNumber;
 		try {
 			channel = ChannelBase.of(clientSocket);
 			chatServer.execute(this::reciveMessage);
-//			readMessageThread = new Thread(this::reciveMessage, "getMessageClient" + chatServer.getClientConter());
-//			readMessageThread.start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -52,6 +52,7 @@ public class ClientHandler {
 		if (toHandler != null) {
 			toHandler.channel.sendMessage(new Message(name + ":" + strings[1], MessageType.PERSONAL_MESSAGE));
 			sendSelfMessage(name + ":" + strings[1]);
+			log.info("Клиент №{} с ником {} отправил личное сообщение пользователю с ником {}", clientNumber, name, toHandler);
 		} else {
 			sendSelfMessage("Пользователя с ником " + toHandlerNick + "нет в сети");
 		}
@@ -77,7 +78,8 @@ public class ClientHandler {
 					} catch (ExecutionException e) {
 						e.printStackTrace();
 					} catch (TimeoutException e) {
-						sendSelfMessage("Максимальное время авторизации в чате 120 секунд. Соединение разорвано. Перезагрузите клиент.");	
+						sendSelfMessage("Максимальное время авторизации в чате 120 секунд. Соединение разорвано. Перезагрузите клиент.");
+						log.error("Клиент №{} не успел авторизоваться за 120 сек.", clientNumber);
 						break;
 					}
 			} else {				
@@ -89,11 +91,13 @@ public class ClientHandler {
 				case BROADCAST_MESSAGE:
 					String msg = name + ":" + message.getBody();
 					chatServer.broadcastMessage(msg);
-					chatServer.logMessage(msg);
+					chatServer.logMessage(msg);	
+					log.info("Клиент №{} с ником {} отправил общее сообщение", clientNumber, name);
 					break;
 				case EXIT_MESSAGE:
 					chatServer.broadcastMessage("Пользователь " + this.name + " покинул чат");
 					sendSelfMessage("Вы вышли из чата. Перезапустите клиент и авторизуйтесь заново");
+					log.info("Клиент №{} с ником {} вышел из чата", clientNumber, name);
 					chatServer.removeClient(this);
 					return;
 				case PERSONAL_MESSAGE:
@@ -107,6 +111,7 @@ public class ClientHandler {
 				case CHANGE_NICK_MESSAGE:
 					chatServer.getAuthentificationService().changeNick(name, message.getBody());
 					chatServer.broadcastMessage("Пользователь сменил ник с " + name + " на " + message.getBody());
+					log.info("Клиент №{} с ником {} сменил ник на {}", message.getBody());
 					name = message.getBody();
 				default:
 					break;
@@ -143,14 +148,18 @@ public class ClientHandler {
 					this.name = nick;
 					chatServer.addClient(this);
 					chatServer.broadcastMessage("В чат вошел пользователь под именем " + name);
+					log.info("В чат вошел клиент №{} под именем {}", clientNumber, name);
 				} else {
 					sendSelfMessage("Этот пользователь уже авторизован");
+					log.warn("Клиент №{} авторизуется с ником  {}, который уже в сети уже авторизован", clientNumber, nick);
 				}
 			} else {
 				sendSelfMessage("Пользователя не сущетсвует или он деактивирован");
+				log.warn("Клиент №{} авторизуется с ником{}, который не сущетсвует или деактивирован " ,clientNumber, nick);
 			}
 		} else {
 			sendSelfMessage("Авторизация производится следующей командой [/auth user password]");
+			log.warn("Килент №{}. Неправильный формат авторизации:{} ", clientNumber ,msgBody);
 		}
 	}
 }

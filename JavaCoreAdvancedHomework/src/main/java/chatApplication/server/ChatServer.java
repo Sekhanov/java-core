@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import lombok.extern.slf4j.Slf4j;
 import utility.AuthService;
 import utility.DBAuthService;
 import utility.FileMessageLogger;
@@ -15,6 +16,7 @@ import utility.Message;
 import utility.MessageLogger;
 import utility.MessageType;
 
+@Slf4j
 public class ChatServer {
 
 	private static final int SERVER_PORT = 9999;
@@ -48,10 +50,10 @@ public class ChatServer {
 			messageLogger = new FileMessageLogger();
 			executorService = Executors.newCachedThreadPool();
 			while (true) {
-				System.out.println("Server is waiting for connection...");
+				log.info("Server is waiting for connection...");
 				clientSocket = serverSocket.accept();
-				System.out.println("Client " + clientConter + " connected");
-				new ClientHandler(this, clientSocket);
+				log.info("Client " + clientConter + " connected");
+				new ClientHandler(this, clientSocket, clientConter);
 				clientConter++;
 			}
 		} catch (IOException e) {
