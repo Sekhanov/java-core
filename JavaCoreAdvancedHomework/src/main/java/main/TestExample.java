@@ -5,9 +5,12 @@ import myTests.BeforeSuite;
 import myTests.Test;
 
 public class TestExample {
+	
+	private String testField;
 
 	@BeforeSuite
 	public void init() {
+		this.testField = "someValueFromTestField";
 		System.out.println("BeforeSuite executed");
 	}
 	
@@ -29,6 +32,7 @@ public class TestExample {
 	@Test()
 	public void test1() {
 		System.out.println("test with priority 1 executed");
+		System.out.println(testField);
 	}
 	
 	@Test(priority = 2)
