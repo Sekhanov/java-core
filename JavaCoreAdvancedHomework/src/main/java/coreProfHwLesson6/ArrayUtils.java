@@ -1,6 +1,5 @@
 package coreProfHwLesson6;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ArrayUtils {

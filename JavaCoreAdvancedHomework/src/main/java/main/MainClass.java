@@ -29,6 +29,7 @@ import homeworkLesson3.ArrayParser;
 import homeworkLesson3.PhoneDirectory;
 import homeworkLesson4.ChatWindow;
 import homeworkLesson5.ConcurrencyTest;
+import myTests.TestingSystem;
 import race.Car;
 import race.Race;
 import race.Road;
@@ -47,10 +48,16 @@ public class MainClass {
 //		doHomeworkCoreProfLesson4();
 //		doFixHomeworkCoreProfLesson4();
 //		race();
-		coreProfHwLesson6();
+//		coreProfHwLesson6();
+		testing();
 		
 	}
 	
+	private static void testing() {
+		TestingSystem<TestExample> testingSystem = new TestingSystem<>(TestExample.class);
+		testingSystem.start();
+	}
+
 	private static void coreProfHwLesson6() {
 		ArrayUtils arrayUtils = new ArrayUtils();
 		int[] arr1 = {4,1,4,1,4};
