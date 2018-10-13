@@ -7,6 +7,15 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Класс TestingSystem принимает тестируемый класс, методы которого должны быть 
+ * помечены аннотациями {@link BeforeSuite}, {@link Test}, {@link AfterSuite}
+ * и исполняет данные методы в соответствии со спецификацией аннотаций.
+ * @author skhanov
+ *
+ * @param <T> Тестируемый класс
+ */
 public class TestingSystem<T> {
 
 	private Class<T> testClass;
