@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - MainClass",
+            "request": "launch",
+            "mainClass": "main.MainClass",
+            "projectName": "JavaCoreAdvancedHomework",
+            "console": "internalConsole"
+        }
+    ]
+}

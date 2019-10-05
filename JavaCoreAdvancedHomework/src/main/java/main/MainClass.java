@@ -1,10 +1,11 @@
 package main;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.CyclicBarrier;
 
+import blockthreads.ShowMessageMonitor;
+import blockthreads.ShowMessageThread;
 import coreProfHwLesson1.Apple;
 import coreProfHwLesson1.Box;
 import coreProfHwLesson1.GenericsTest;
@@ -44,13 +45,26 @@ public class MainClass {
 //		doHomeworkLesson5();
 		
 //		doHomeworkCoreProfLesson1();
-//		doHomeworkCoreProfLesson4();
+		// doHomeworkCoreProfLesson4();
 //		doFixHomeworkCoreProfLesson4();
 //		race();
-		coreProfHwLesson6();
-		
+//		coreProfHwLesson6();
+		blockThreads();
 	}
 	
+	private static void blockThreads() {
+		List<ShowMessageThread> showMessageThreads = new ArrayList<>();
+		ShowMessageMonitor showMessageMonitor = new ShowMessageMonitor(showMessageThreads);
+		showMessageThreads.add(new ShowMessageThread(showMessageMonitor, "A"));
+		showMessageThreads.add(new ShowMessageThread(showMessageMonitor, "B"));
+		showMessageThreads.add(new ShowMessageThread(showMessageMonitor, "C"));
+		showMessageThreads.add(new ShowMessageThread(showMessageMonitor, "D"));
+		showMessageThreads.add(new ShowMessageThread(showMessageMonitor, "E"));
+		showMessageThreads.add(new ShowMessageThread(showMessageMonitor, "F"));
+		showMessageThreads.add(new ShowMessageThread(showMessageMonitor, "G"));
+		showMessageMonitor.releaseFirstThread();
+	}
+
 	private static void coreProfHwLesson6() {
 		ArrayUtils arrayUtils = new ArrayUtils();
 		int[] arr1 = {4,1,4,1,4};
